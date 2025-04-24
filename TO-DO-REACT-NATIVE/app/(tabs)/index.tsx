@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Text, View, FlatList, StyleSheet } from "react-native";
+import { Text, View, FlatList, StyleSheet, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 import Loading from "../components/loading";
 
 type List = {
@@ -11,6 +12,7 @@ type List = {
 export default function Index() {
 
   const [list, setList] = useState<List[]>([])
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchAPI() {
@@ -40,10 +42,12 @@ export default function Index() {
             data={list}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
-              <View style={styles.container}>
-                <Text style={styles.text}>{item.id}-</Text>
-                <Text style={styles.text}>{item.title}</Text>
-              </View>
+              <TouchableOpacity
+                onPress={() => router.push(`/item/${item.id}`)}
+                style={styles.container}
+              >
+                <Text style={styles.text}>{item.id} - {item.title}</Text>
+              </TouchableOpacity>
             )}
           />
       }
@@ -53,10 +57,22 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    padding: 20,
+    justifyContent: "center",
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10
+  },
   container: {
-    flexDirection: 'row',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderColor: "#ddd",
   },
   text: {
-    fontSize: 25
+    fontSize: 18
   }
-})
+});
