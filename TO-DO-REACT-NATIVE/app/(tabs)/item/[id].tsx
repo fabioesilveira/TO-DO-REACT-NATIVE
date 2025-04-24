@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import axios from 'axios';
 import Loading from '@/app/components/loading';
 
@@ -40,9 +40,9 @@ export default function ItemDetail() {
                 list === null ?
                     <Loading /> :
                     <View style={styles.container}>
-                        <Text style={styles.title}>Item Details</Text>
-                        <Text>ID: {list.id}</Text>
-                        <Text>Title: {list.title}</Text>
+                        <Text style={styles.title}>Task Selected</Text>
+                        <Text>Number: {list.id}</Text>
+                        <Text>Taks: {list.title}</Text>
                     </View>
             }
         </View>
@@ -50,6 +50,13 @@ export default function ItemDetail() {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    title: { fontSize: 24, marginBottom: 10 },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    title: {
+        fontSize: 24,
+        marginBottom: 10
+    },
 });
