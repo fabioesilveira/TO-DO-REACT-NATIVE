@@ -2,7 +2,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import axios from 'axios';
-import Loading from '@/app/components/loading';
+import Loading from '@/components/loading';
 
 export default function ItemDetail() {
 

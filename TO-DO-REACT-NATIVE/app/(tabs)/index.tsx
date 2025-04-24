@@ -2,27 +2,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Text, View, FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
-import Loading from "../components/loading";
-
-type List = {
-  id: string;
-  title: string;
-};
+import Loading from "../../components/loading";
+import { useApp } from "@/context/AppProvider";
 
 export default function Index() {
-
-  const [list, setList] = useState<List[]>([])
+ 
+  const { nome, list } = useApp()
   const router = useRouter();
-
-  useEffect(() => {
-    async function fetchAPI() {
-      const req = await axios.get("https://67fe6fd258f18d7209ee374d.mockapi.io/toDoList")
-      const res = req.data
-      setList(res)
-    }
-
-    fetchAPI();
-  }, [])
 
   return (
     <View
@@ -34,7 +20,7 @@ export default function Index() {
     >
 
       <Text>Edit app/index.tsx to edit this screen.</Text>
-
+      <Text>{nome}</Text>
       {
         list.length === 0 ?
           <Loading /> :
