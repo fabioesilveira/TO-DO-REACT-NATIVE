@@ -1,12 +1,10 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { Text, View, FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import Loading from "../../components/loading";
 import { useApp } from "@/context/AppProvider";
 
 export default function Index() {
- 
+
   const { nome, list } = useApp()
   const router = useRouter();
 
@@ -18,7 +16,6 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-
       <Text>Edit app/index.tsx to edit this screen.</Text>
       <Text>{nome}</Text>
       {
