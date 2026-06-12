@@ -8,15 +8,15 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [nome, setNome] = useState("Alberto");
   const [list, setList] = useState([])
 
-  useEffect(() => {
-    async function fetchAPI() {
-      const req = await axios.get("https://67fe6fd258f18d7209ee374d.mockapi.io/toDoList")
-      const res = req.data
-      setList(res)
-    }
+  // useEffect(() => {
+  //   async function fetchAPI() {
+  //     const req = await axios.get("https://67fe6fd258f18d7209ee374d.mockapi.io/toDoList")
+  //     const res = req.data
+  //     setList(res)
+  //   }
 
-    fetchAPI();
-  }, [])
+  //   fetchAPI();
+  // }, [])
 
   const value: AppContextType = {
     nome,
