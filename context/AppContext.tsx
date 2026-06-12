@@ -1,14 +1,12 @@
-import { createContext } from 'react';
+import { createContext } from "react";
+import type { Todo } from "../types/Todo";
 
-type List = {
-  id: string;
-  title: string;
-};
 export type AppContextType = {
-  nome: string;
-  setNome: (value: string) => void;
-  list: List[];
-  setList: any;
+  todos: Todo[];
+  addTodo: (title: string) => void;
+  toggleTodo: (id: string) => void;
+  deleteTodo: (id: string) => void;
+  updateTodo: (id: string, title: string) => void;
 };
 
-export const AppContext = createContext<AppContextType | undefined>(undefined);
+export const AppContext = createContext<AppContextType | null>(null);

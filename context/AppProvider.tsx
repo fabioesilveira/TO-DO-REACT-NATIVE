@@ -1,41 +1,74 @@
-// contexts/AppProvider.tsx
-import React, { useState, useContext, useEffect } from 'react';
-import { AppContext, AppContextType } from './AppContext';
-import axios from 'axios';
+import { useContext, useState, type ReactNode } from "react";
+import { AppContext } from "./AppContext";
+import type { Todo } from "../types/Todo";
 
-export const AppProvider = ({ children }: { children: React.ReactNode }) => {
+type AppProviderProps = {
+  children: ReactNode;
+};
 
-  const [nome, setNome] = useState("Alberto");
-  const [list, setList] = useState([])
+export function AppProvider({ children }: AppProviderProps) {
+  const [todos, setTodos] = useState<Todo[]>([]);
 
-  // useEffect(() => {
-  //   async function fetchAPI() {
-  //     const req = await axios.get("https://67fe6fd258f18d7209ee374d.mockapi.io/toDoList")
-  //     const res = req.data
-  //     setList(res)
-  //   }
+  function addTodo(title: string) {
+    const trimmedTitle = title.trim();
 
-  //   fetchAPI();
-  // }, [])
+    if (!trimmedTitle) return;
 
-  const value: AppContextType = {
-    nome,
-    setNome,
-    list,
-    setList
-  };
+    const newTodo: Todo = {
+      id: Date.now().toString(),
+      title: trimmedTitle,
+      completed: false,
+      createdAt: new Date().toISOString(),
+    };
+
+    setTodos((prev) => [newTodo, ...prev]);
+  }
+
+  function toggleTodo(id: string) {
+    setTodos((prev) =>
+      prev.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  }
+
+  function deleteTodo(id: string) {
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  }
+
+  function updateTodo(id: string, title: string) {
+    const trimmedTitle = title.trim();
+
+    if (!trimmedTitle) return;
+
+    setTodos((prev) =>
+      prev.map((todo) =>
+        todo.id === id ? { ...todo, title: trimmedTitle } : todo
+      )
+    );
+  }
 
   return (
-    <AppContext.Provider value={value}>
+    <AppContext.Provider
+      value={{
+        todos,
+        addTodo,
+        toggleTodo,
+        deleteTodo,
+        updateTodo,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );
-};
+}
 
-export const useApp = () => {
+export function useApp() {
   const context = useContext(AppContext);
+
   if (!context) {
-    throw new Error('useApp precisa estar dentro de um AppProvider');
+    throw new Error("useApp must be used inside AppProvider");
   }
+
   return context;
-};
+}
