@@ -1,13 +1,35 @@
-import { View, Text, StyleSheet } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import TodoCard from "@/components/TodoCard";
+import { useApp } from "@/context/AppProvider";
 
 export default function Home() {
+  const { todos } = useApp();
+
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tasks</Text>
-
-      <Text style={styles.empty}>
-        No tasks yet.
+      <Text style={styles.heading}>
+        My Tasks
       </Text>
+
+      {todos.length === 0 ? (
+        <Text style={styles.empty}>
+          No tasks yet.
+        </Text>
+      ) : (
+        <FlatList
+          data={todos}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TodoCard
+              todo={item}
+              onPress={() => router.push(`/item/${item.id}`)}
+            />
+          )}
+        />
+      )}
     </View>
   );
 }
@@ -16,17 +38,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "#f3f4f6",
   },
 
-  title: {
+  heading: {
     fontSize: 30,
     fontWeight: "bold",
     marginBottom: 20,
   },
 
   empty: {
+    color: "#666",
     fontSize: 18,
-    color: "#777",
   },
 });
