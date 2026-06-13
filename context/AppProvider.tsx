@@ -1,4 +1,5 @@
-import { useContext, useState, type ReactNode } from "react";
+import { useContext, useEffect, useState, type ReactNode } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AppContext } from "./AppContext";
 import type { Todo } from "../types/Todo";
 
@@ -6,8 +7,43 @@ type AppProviderProps = {
   children: ReactNode;
 };
 
+const TODOS_STORAGE_KEY = "@todo-react-native:todos";
+
 export function AppProvider({ children }: AppProviderProps) {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [isLoadingTodos, setIsLoadingTodos] = useState(true);
+
+  useEffect(() => {
+    async function loadTodos() {
+      try {
+        const storedTodos = await AsyncStorage.getItem(TODOS_STORAGE_KEY);
+
+        if (storedTodos) {
+          setTodos(JSON.parse(storedTodos));
+        }
+      } catch (error) {
+        console.error("Failed to load todos:", error);
+      } finally {
+        setIsLoadingTodos(false);
+      }
+    }
+
+    loadTodos();
+  }, []);
+
+  useEffect(() => {
+    if (isLoadingTodos) return;
+
+    async function saveTodos() {
+      try {
+        await AsyncStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(todos));
+      } catch (error) {
+        console.error("Failed to save todos:", error);
+      }
+    }
+
+    saveTodos();
+  }, [todos, isLoadingTodos]);
 
   function addTodo(title: string) {
     const trimmedTitle = title.trim();
@@ -52,6 +88,7 @@ export function AppProvider({ children }: AppProviderProps) {
     <AppContext.Provider
       value={{
         todos,
+        isLoadingTodos,
         addTodo,
         toggleTodo,
         deleteTodo,

@@ -3,6 +3,7 @@ import type { Todo } from "../types/Todo";
 
 export type AppContextType = {
   todos: Todo[];
+  isLoadingTodos: boolean;
   addTodo: (title: string) => void;
   toggleTodo: (id: string) => void;
   deleteTodo: (id: string) => void;
