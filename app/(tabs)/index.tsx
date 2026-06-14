@@ -4,7 +4,7 @@ import TodoCard from "@/components/TodoCard";
 import { useApp } from "@/context/AppProvider";
 
 export default function Home() {
-  const { todos } = useApp();
+  const { todos, toggleTodo } = useApp();
 
   const router = useRouter();
 
@@ -26,6 +26,7 @@ export default function Home() {
             <TodoCard
               todo={item}
               onPress={() => router.push(`/item/${item.id}`)}
+              onToggle={() => toggleTodo(item.id)}
             />
           )}
         />
