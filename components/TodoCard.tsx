@@ -17,6 +17,14 @@ type TodoCardProps = {
     onDelete: () => void;
 };
 
+function formatDate(date: string) {
+    return new Date(date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    });
+}
+
 export default function TodoCard({
     todo,
     onPress,
@@ -29,23 +37,13 @@ export default function TodoCard({
                 "Are you sure you want to delete this task?"
             );
 
-            if (confirmed) {
-                onDelete();
-            }
-
+            if (confirmed) onDelete();
             return;
         }
 
         Alert.alert("Delete task", "Are you sure you want to delete this task?", [
-            {
-                text: "Cancel",
-                style: "cancel",
-            },
-            {
-                text: "Delete",
-                style: "destructive",
-                onPress: onDelete,
-            },
+            { text: "Cancel", style: "cancel" },
+            { text: "Delete", style: "destructive", onPress: onDelete },
         ]);
     }
 
@@ -60,8 +58,8 @@ export default function TodoCard({
             >
                 <Ionicons
                     name={todo.completed ? "checkmark-circle" : "ellipse-outline"}
-                    size={26}
-                    color={todo.completed ? "#22c55e" : "#999"}
+                    size={28}
+                    color={todo.completed ? "#22c55e" : "#9ca3af"}
                 />
             </TouchableOpacity>
 
@@ -69,6 +67,8 @@ export default function TodoCard({
                 <Text style={[styles.title, todo.completed && styles.completedTitle]}>
                     {todo.title}
                 </Text>
+
+                <Text style={styles.date}>Created {formatDate(todo.createdAt)}</Text>
             </View>
 
             <TouchableOpacity
@@ -89,17 +89,20 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         padding: 16,
         marginBottom: 12,
-        borderRadius: 12,
+        borderRadius: 16,
         flexDirection: "row",
         alignItems: "center",
         gap: 12,
 
+        borderWidth: 1,
+        borderColor: "#e5e7eb",
+
         shadowColor: "#000",
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
+        shadowOpacity: 0.08,
+        shadowRadius: 10,
         shadowOffset: {
             width: 0,
-            height: 3,
+            height: 4,
         },
 
         elevation: 3,
@@ -114,13 +117,20 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        fontSize: 18,
-        color: "#111",
+        fontSize: 17,
+        fontWeight: "600",
+        color: "#111827",
     },
 
     completedTitle: {
-        color: "#888",
+        color: "#9ca3af",
         textDecorationLine: "line-through",
+    },
+
+    date: {
+        marginTop: 4,
+        fontSize: 11,
+        color: "#6b7280",
     },
 
     deleteButton: {
