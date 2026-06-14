@@ -1,93 +1,67 @@
-import { useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
-import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import axios from 'axios';
-import Loading from '@/components/loading';
+import { useEffect, useState } from "react";
+import {
+    Alert,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useApp } from "@/context/AppProvider";
 
-export default function ItemDetail() {
+export default function EditTaskScreen() {
+    const { id } = useLocalSearchParams<{ id: string }>();
+    const router = useRouter();
+    const { todos, updateTodo } = useApp();
 
-    type List = {
-        id: string;
-        title: string;
-    };
-
-    const { id } = useLocalSearchParams();
-    const [list, setList] = useState<List | null>(null)
-    const [notFound, setNotFound] = useState(false)
-    const [updateTask, setUpdateTask] = useState("")
-    const [edit, setEdit] = useState(false)
+    const todo = todos.find((item) => item.id === id);
+    const [title, setTitle] = useState("");
 
     useEffect(() => {
-        async function fetchApi() {
-            try {
-                const req = await axios.get(`https://67fe6fd258f18d7209ee374d.mockapi.io/toDoList/${id}`)
-                const res = req.data
-                setList(res)
-            } catch (error) {
-                console.error("estou aqui", error)
-                setNotFound(true)
-            }
+        if (todo) {
+            setTitle(todo.title);
         }
-        if (typeof id === 'string') {
-            fetchApi();
+    }, [todo]);
+
+    function handleUpdateTask() {
+        if (!id) return;
+
+        if (!title.trim()) {
+            Alert.alert("Missing task", "Please enter a task before saving.");
+            return;
         }
-    }, [id])
 
-    async function handleDelete() {
-        const req = await axios.delete(`https://67fe6fd258f18d7209ee374d.mockapi.io/toDoList/${id}`)
-        const res = req.data
-        console.log(res)
-
+        updateTodo(id, title);
+        router.push("/");
     }
 
-    function handleEdit() {
-        setEdit(true)
-    }
+    if (!todo) {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.heading}>Task not found</Text>
 
-    async function handleSubmit() {
-        await axios.put(`https://67fe6fd258f18d7209ee374d.mockapi.io/toDoList/${id}`, {
-            title: updateTask
-        })
-    }
-
-    if (notFound === true) {
-        return <Text>This task no longer exists.</Text>
+                <TouchableOpacity style={styles.button} onPress={() => router.push("/")}>
+                    <Text style={styles.buttonText}>Back to Tasks</Text>
+                </TouchableOpacity>
+            </View>
+        );
     }
 
     return (
-        <View
-            style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
+        <View style={styles.container}>
+            <Text style={styles.heading}>Edit Task</Text>
 
-            <Text>Edit app/index.tsx to edit this screen.</Text>
+            <TextInput
+                value={title}
+                onChangeText={setTitle}
+                placeholder="Edit task..."
+                style={styles.input}
+            />
 
-            {
-                list === null ?
-                    <Loading /> :
-                    <View style={styles.container}>
-                        <Text style={styles.title}>Task Selected</Text>
-                        <Text>Number: {list.id}</Text>
-                        <Text>Taks: {list.title}</Text>
-                        <SimpleLineIcons onPress={handleEdit} name="pencil" size={24} color="black" />
-                        <AntDesign onPress={handleDelete} name="closecircle" size={24} color="black" />
-                    </View>
-            }
-
-            {
-                edit === false ?
-                    null :
-                    <View>
-                        <TextInput onChangeText={setUpdateTask} style={styles.input} placeholder="Digite algo..." />
-                        <Button title="Clique aqui" onPress={handleSubmit} />
-                    </View> 
-            }
-
+            <TouchableOpacity style={styles.button} onPress={handleUpdateTask}>
+                <Text style={styles.buttonText}>Update Task</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -95,17 +69,32 @@ export default function ItemDetail() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
+        padding: 20,
+        backgroundColor: "#f3f4f6",
     },
-    title: {
-        fontSize: 24,
-        marginBottom: 10
+    heading: {
+        fontSize: 30,
+        fontWeight: "bold",
+        marginBottom: 20,
     },
     input: {
+        backgroundColor: "#fff",
         borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 10,
-        borderRadius: 5,
+        borderColor: "#ddd",
+        borderRadius: 12,
+        padding: 16,
+        fontSize: 18,
+        marginBottom: 16,
+    },
+    button: {
+        backgroundColor: "#25292e",
+        padding: 16,
+        borderRadius: 12,
+        alignItems: "center",
+    },
+    buttonText: {
+        color: "#ffd33d",
+        fontSize: 16,
+        fontWeight: "bold",
     },
 });
