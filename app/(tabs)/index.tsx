@@ -16,6 +16,13 @@ export default function Home() {
   const completedTasks = todos.filter((todo) => todo.completed).length;
   const activeTasks = totalTasks - completedTasks;
 
+  const today = new Date().toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
   const filteredTodos = useMemo(() => {
     if (filter === "active") {
       return todos.filter((todo) => !todo.completed);
@@ -36,7 +43,11 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>My Tasks</Text>
+      <Text style={styles.heading}>
+        TO DO LIST
+      </Text>
+
+      <Text style={styles.date}>{today}</Text>
 
       <Text style={styles.stats}>
         {totalTasks} tasks • {completedTasks} completed • {activeTasks} active
@@ -122,9 +133,17 @@ const styles = StyleSheet.create({
   },
 
   heading: {
-    fontSize: 30,
-    fontWeight: "bold",
-    marginBottom: 6,
+    fontFamily: "LondrinaOutline_400Regular",
+    fontSize: 58,
+    textAlign: "center",
+    letterSpacing: 2,
+  },
+
+  date: {
+    textAlign: "center",
+    color: "#777",
+    fontSize: 14,
+    marginBottom: 25,
   },
 
   stats: {
