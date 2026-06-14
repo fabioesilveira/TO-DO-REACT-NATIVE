@@ -4,10 +4,10 @@ import { useRouter } from "expo-router";
 import TodoCard from "@/components/TodoCard";
 import { useApp } from "@/context/AppProvider";
 
-type FilterType = "all" | "active" | "completed";
+type FilterType = "all tasks" | "active" | "completed";
 
 export default function Home() {
-  const [filter, setFilter] = useState<FilterType>("all");
+  const [filter, setFilter] = useState<FilterType>("all tasks");
 
   const { todos, toggleTodo, deleteTodo } = useApp();
   const router = useRouter();
@@ -49,22 +49,19 @@ export default function Home() {
 
       <Text style={styles.date}>{today}</Text>
 
-      <Text style={styles.stats}>
-        {totalTasks} tasks • {completedTasks} completed • {activeTasks} active
-      </Text>
 
       <View style={styles.filters}>
         <TouchableOpacity
-          style={[styles.filterButton, filter === "all" && styles.activeFilter]}
-          onPress={() => setFilter("all")}
+          style={[styles.filterButton, filter === "all tasks" && styles.activeFilter]}
+          onPress={() => setFilter("all tasks")}
         >
           <Text
             style={[
               styles.filterText,
-              filter === "all" && styles.activeFilterText,
+              filter === "all tasks" && styles.activeFilterText,
             ]}
           >
-            All
+            All Tasks
           </Text>
         </TouchableOpacity>
 
@@ -102,6 +99,10 @@ export default function Home() {
           </Text>
         </TouchableOpacity>
       </View>
+
+      <Text style={styles.stats}>
+        {totalTasks} tasks • {completedTasks} completed • {activeTasks} active
+      </Text>
 
       {filteredTodos.length === 0 ? (
         <Text style={styles.empty}>{getEmptyMessage()}</Text>
@@ -147,9 +148,10 @@ const styles = StyleSheet.create({
   },
 
   stats: {
-    fontSize: 15,
+    fontSize: 12,
     color: "#666",
-    marginBottom: 18,
+    marginBottom: 10,
+    marginLeft: 5,
   },
 
   filters: {
@@ -159,12 +161,13 @@ const styles = StyleSheet.create({
   },
 
   filterButton: {
-    paddingVertical: 9,
-    paddingHorizontal: 14,
+    flex: 1,
+    paddingVertical: 8,
     borderRadius: 999,
     backgroundColor: "#fff",
     borderWidth: 1,
     borderColor: "#ddd",
+    alignItems: "center",
   },
 
   activeFilter: {
