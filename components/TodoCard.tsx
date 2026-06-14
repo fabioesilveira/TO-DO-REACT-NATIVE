@@ -1,7 +1,6 @@
 import {
     Alert,
     Platform,
-    Pressable,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -9,11 +8,12 @@ import {
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import type { Todo } from "../types/Todo";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 type TodoCardProps = {
     todo: Todo;
-    onPress: () => void;
     onToggle: () => void;
+    onEdit: () => void;
     onDelete: () => void;
 };
 
@@ -27,8 +27,8 @@ function formatDate(date: string) {
 
 export default function TodoCard({
     todo,
-    onPress,
     onToggle,
+    onEdit,
     onDelete,
 }: TodoCardProps) {
     function confirmDelete() {
@@ -48,14 +48,8 @@ export default function TodoCard({
     }
 
     return (
-        <Pressable style={styles.container} onPress={onPress}>
-            <TouchableOpacity
-                onPress={(e) => {
-                    e.stopPropagation();
-                    onToggle();
-                }}
-                style={styles.checkButton}
-            >
+        <View style={styles.container}>
+            <TouchableOpacity onPress={onToggle} style={styles.checkButton}>
                 <Ionicons
                     name={todo.completed ? "checkmark-circle" : "ellipse-outline"}
                     size={28}
@@ -71,16 +65,20 @@ export default function TodoCard({
                 <Text style={styles.date}>Created {formatDate(todo.createdAt)}</Text>
             </View>
 
-            <TouchableOpacity
-                onPress={(e) => {
-                    e.stopPropagation();
-                    confirmDelete();
-                }}
-                style={styles.deleteButton}
-            >
-                <Ionicons name="trash-outline" size={22} color="#ef4444" />
-            </TouchableOpacity>
-        </Pressable>
+            <View style={styles.actions}>
+                <TouchableOpacity onPress={onEdit} style={styles.actionButton}>
+                    <MaterialCommunityIcons
+                        name="square-edit-outline"
+                        size={22}
+                        color="#2563eb"
+                    />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={confirmDelete} style={styles.actionButton}>
+                    <Ionicons name="trash-outline" size={22} color="#ef4444" />
+                </TouchableOpacity>
+            </View>
+        </View>
     );
 }
 
@@ -129,11 +127,17 @@ const styles = StyleSheet.create({
 
     date: {
         marginTop: 4,
-        fontSize: 11,
+        fontSize: 13,
         color: "#6b7280",
     },
 
-    deleteButton: {
+    actions: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8,
+    },
+
+    actionButton: {
         padding: 4,
     },
 });

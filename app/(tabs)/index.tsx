@@ -101,7 +101,7 @@ export default function Home() {
           renderItem={({ item }) => (
             <TodoCard
               todo={item}
-              onPress={() => router.push(`/item/${item.id}`)}
+              onEdit={() => router.push(`/item/${item.id}`)}
               onToggle={() => toggleTodo(item.id)}
               onDelete={() => deleteTodo(item.id)}
             />
