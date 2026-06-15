@@ -1,8 +1,12 @@
 import { useMemo, useState } from "react";
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 import TodoCard from "@/components/TodoCard";
 import { useApp } from "@/context/AppProvider";
+import { formatFullDate } from "@/utils/formatDate";
+import FilterButton from "@/components/FilterButton";
+import TaskStats from "@/components/TaskStats";
+import EmptyState from "@/components/EmptyState";
 
 type FilterType = "all tasks" | "active" | "completed";
 
@@ -10,18 +14,12 @@ export default function Home() {
   const [filter, setFilter] = useState<FilterType>("all tasks");
 
   const { todos, toggleTodo, deleteTodo } = useApp();
+  const today = formatFullDate();
   const router = useRouter();
 
   const totalTasks = todos.length;
   const completedTasks = todos.filter((todo) => todo.completed).length;
   const activeTasks = totalTasks - completedTasks;
-
-  const today = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
 
   const filteredTodos = useMemo(() => {
     if (filter === "active") {
@@ -50,61 +48,33 @@ export default function Home() {
       <Text style={styles.date}>{today}</Text>
 
       <View style={styles.filters}>
-        <TouchableOpacity
-          style={[styles.filterButton, filter === "all tasks" && styles.activeFilter]}
+        <FilterButton
+          label="All Tasks"
+          isActive={filter === "all tasks"}
           onPress={() => setFilter("all tasks")}
-        >
-          <Text
-            style={[
-              styles.filterText,
-              filter === "all tasks" && styles.activeFilterText,
-            ]}
-          >
-            All Tasks
-          </Text>
-        </TouchableOpacity>
+        />
 
-        <TouchableOpacity
-          style={[
-            styles.filterButton,
-            filter === "active" && styles.activeFilter,
-          ]}
+        <FilterButton
+          label="Active"
+          isActive={filter === "active"}
           onPress={() => setFilter("active")}
-        >
-          <Text
-            style={[
-              styles.filterText,
-              filter === "active" && styles.activeFilterText,
-            ]}
-          >
-            Active
-          </Text>
-        </TouchableOpacity>
+        />
 
-        <TouchableOpacity
-          style={[
-            styles.filterButton,
-            filter === "completed" && styles.activeFilter,
-          ]}
+        <FilterButton
+          label="Completed"
+          isActive={filter === "completed"}
           onPress={() => setFilter("completed")}
-        >
-          <Text
-            style={[
-              styles.filterText,
-              filter === "completed" && styles.activeFilterText,
-            ]}
-          >
-            Completed
-          </Text>
-        </TouchableOpacity>
+        />
       </View>
 
-      <Text style={styles.stats}>
-        {totalTasks} tasks • {completedTasks} completed • {activeTasks} active
-      </Text>
+      <TaskStats
+        totalTasks={totalTasks}
+        completedTasks={completedTasks}
+        activeTasks={activeTasks}
+      />
 
       {filteredTodos.length === 0 ? (
-        <Text style={styles.empty}>{getEmptyMessage()}</Text>
+        <EmptyState message={getEmptyMessage()} />
       ) : (
         <FlatList
           data={filteredTodos}
@@ -146,46 +116,10 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
 
-  stats: {
-    fontSize: 12,
-    color: "#666",
-    marginBottom: 10,
-    marginLeft: 5,
-  },
-
   filters: {
     flexDirection: "row",
     gap: 10,
     marginBottom: 18,
-  },
-
-  filterButton: {
-    flex: 1,
-    paddingVertical: 8,
-    borderRadius: 999,
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ddd",
-    alignItems: "center",
-  },
-
-  activeFilter: {
-    backgroundColor: "#25292e",
-    borderColor: "#25292e",
-  },
-
-  filterText: {
-    color: "#555",
-    fontWeight: "700",
-  },
-
-  activeFilterText: {
-    color: "#ffd33d",
-  },
-
-  empty: {
-    color: "#666",
-    fontSize: 18,
   },
 
   listContent: {

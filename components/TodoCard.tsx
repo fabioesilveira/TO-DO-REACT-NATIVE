@@ -4,6 +4,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import type { Todo } from "../types/Todo";
 import ConfirmModal from "./ConfirmModal";
+import { formatDate } from "@/utils/formatDate";
 
 type TodoCardProps = {
     todo: Todo;
@@ -11,14 +12,6 @@ type TodoCardProps = {
     onEdit: () => void;
     onDelete: () => void;
 };
-
-function formatDate(date: string) {
-    return new Date(date).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-    });
-}
 
 export default function TodoCard({
     todo,

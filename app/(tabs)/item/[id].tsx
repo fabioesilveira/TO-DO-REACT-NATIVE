@@ -10,22 +10,17 @@ import {
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useApp } from "@/context/AppProvider";
 import ConfirmModal from "@/components/ConfirmModal";
+import { formatFullDate } from "@/utils/formatDate";
 
 export default function EditTaskScreen() {
     const { id } = useLocalSearchParams<{ id: string }>();
     const router = useRouter();
     const { todos, updateTodo } = useApp();
+    const today = formatFullDate();
 
     const todo = todos.find((item) => item.id === id);
     const [title, setTitle] = useState("");
     const [successModalVisible, setSuccessModalVisible] = useState(false);
-
-    const today = new Date().toLocaleDateString("en-US", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-    });
 
     useEffect(() => {
         if (todo) {

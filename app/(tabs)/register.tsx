@@ -10,6 +10,7 @@ import {
 import { useApp } from "@/context/AppProvider";
 import ConfirmModal from "@/components/ConfirmModal";
 import type { TextInput as TextInputType } from "react-native";
+import { formatFullDate } from "@/utils/formatDate";
 
 export default function RegisterScreen() {
     const [title, setTitle] = useState("");
@@ -17,12 +18,7 @@ export default function RegisterScreen() {
     const inputRef = useRef<TextInputType>(null);
     const { addTodo } = useApp();
 
-    const today = new Date().toLocaleDateString("en-US", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-    });
+    const today = formatFullDate();
 
     function handleAddTask() {
         if (!title.trim()) {
