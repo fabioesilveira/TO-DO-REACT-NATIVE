@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     },
     heading: {
         fontFamily: "LondrinaOutline_400Regular",
-        fontSize: 58,
+        fontSize: 60,
         textAlign: "center",
         letterSpacing: 2,
     },

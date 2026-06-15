@@ -9,20 +9,23 @@ export default function TabLayout() {
         tabBarShowLabel: false,
 
         tabBarActiveTintColor: "#ffd33d",
+        tabBarInactiveTintColor: "#8a8a8a",
 
         headerStyle: {
           backgroundColor: "#25292e",
         },
-
         headerShadowVisible: false,
         headerTintColor: "#fff",
 
         tabBarStyle: {
           backgroundColor: "#25292e",
-          height: 60,
-          paddingTop: 10,
-          paddingBottom: 15,
+          height: 65,
           borderTopWidth: 0,
+          paddingTop: 8,
+        },
+
+        tabBarIconStyle: {
+          marginTop: 6,
         },
       }}
     >
@@ -30,7 +33,6 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "",
-          tabBarShowLabel: false,
           tabBarIcon: ({
             color,
             focused,
@@ -41,7 +43,7 @@ export default function TabLayout() {
             <Ionicons
               name={focused ? "list" : "list-outline"}
               color={color}
-              size={30}
+              size={32}
             />
           ),
         }}
@@ -51,7 +53,6 @@ export default function TabLayout() {
         name="register"
         options={{
           title: "",
-          tabBarShowLabel: false,
           tabBarIcon: ({
             color,
             focused,
@@ -62,7 +63,7 @@ export default function TabLayout() {
             <AntDesign
               name={focused ? "pluscircle" : "pluscircleo"}
               color={color}
-              size={30}
+              size={32}
             />
           ),
         }}
