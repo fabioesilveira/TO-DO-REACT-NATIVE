@@ -6,21 +6,31 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
+        tabBarShowLabel: false,
+
         tabBarActiveTintColor: "#ffd33d",
+
         headerStyle: {
           backgroundColor: "#25292e",
         },
+
         headerShadowVisible: false,
         headerTintColor: "#fff",
+
         tabBarStyle: {
           backgroundColor: "#25292e",
+          height: 60,
+          paddingTop: 10,
+          paddingBottom: 15,
+          borderTopWidth: 0,
         },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Tasks",
+          title: "",
+          tabBarShowLabel: false,
           tabBarIcon: ({
             color,
             focused,
@@ -31,16 +41,17 @@ export default function TabLayout() {
             <Ionicons
               name={focused ? "list" : "list-outline"}
               color={color}
-              size={24}
+              size={30}
             />
-          )
+          ),
         }}
       />
 
       <Tabs.Screen
         name="register"
         options={{
-          title: "Add Task",
+          title: "",
+          tabBarShowLabel: false,
           tabBarIcon: ({
             color,
             focused,
@@ -51,9 +62,9 @@ export default function TabLayout() {
             <AntDesign
               name={focused ? "pluscircle" : "pluscircleo"}
               color={color}
-              size={24}
+              size={30}
             />
-          )
+          ),
         }}
       />
 
@@ -61,7 +72,7 @@ export default function TabLayout() {
         name="item/[id]"
         options={{
           href: null,
-          title: "Edit Task",
+          title: "",
         }}
       />
     </Tabs>
