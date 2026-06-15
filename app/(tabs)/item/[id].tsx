@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useApp } from "@/context/AppProvider";
+import ConfirmModal from "@/components/ConfirmModal";
 
 export default function EditTaskScreen() {
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -17,6 +18,7 @@ export default function EditTaskScreen() {
 
     const todo = todos.find((item) => item.id === id);
     const [title, setTitle] = useState("");
+    const [successModalVisible, setSuccessModalVisible] = useState(false);
 
     const today = new Date().toLocaleDateString("en-US", {
         weekday: "long",
@@ -24,7 +26,6 @@ export default function EditTaskScreen() {
         day: "numeric",
         year: "numeric",
     });
-
 
     useEffect(() => {
         if (todo) {
@@ -41,7 +42,7 @@ export default function EditTaskScreen() {
         }
 
         updateTodo(id, title);
-        router.push("/");
+        setSuccessModalVisible(true);
     }
 
     if (!todo) {
@@ -58,9 +59,7 @@ export default function EditTaskScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>
-                TO DO LIST
-            </Text>
+            <Text style={styles.heading}>TO DO LIST</Text>
 
             <Text style={styles.date}>{today}</Text>
 
@@ -74,6 +73,18 @@ export default function EditTaskScreen() {
             <TouchableOpacity style={styles.button} onPress={handleUpdateTask}>
                 <Text style={styles.buttonText}>Update Task</Text>
             </TouchableOpacity>
+
+            <ConfirmModal
+                visible={successModalVisible}
+                title="Task updated!"
+                message="Your changes were saved successfully."
+                confirmText="OK"
+                type="success"
+                onConfirm={() => {
+                    setSuccessModalVisible(false);
+                    router.push("/");
+                }}
+            />
         </View>
     );
 }

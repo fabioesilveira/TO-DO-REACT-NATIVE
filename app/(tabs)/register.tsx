@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
     Alert,
     StyleSheet,
@@ -7,13 +7,15 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import { useRouter } from "expo-router";
 import { useApp } from "@/context/AppProvider";
+import ConfirmModal from "@/components/ConfirmModal";
+import type { TextInput as TextInputType } from "react-native";
 
 export default function RegisterScreen() {
     const [title, setTitle] = useState("");
+    const [successModalVisible, setSuccessModalVisible] = useState(false);
+    const inputRef = useRef<TextInputType>(null);
     const { addTodo } = useApp();
-    const router = useRouter();
 
     const today = new Date().toLocaleDateString("en-US", {
         weekday: "long",
@@ -30,7 +32,7 @@ export default function RegisterScreen() {
 
         addTodo(title);
         setTitle("");
-        router.push("/");
+        setSuccessModalVisible(true);
     }
 
     return (
@@ -42,15 +44,34 @@ export default function RegisterScreen() {
             <Text style={styles.date}>{today}</Text>
 
             <TextInput
+                ref={inputRef}
                 value={title}
                 onChangeText={setTitle}
                 placeholder="Enter a task..."
                 style={styles.input}
+                autoFocus
+                returnKeyType="done"
             />
 
             <TouchableOpacity style={styles.button} onPress={handleAddTask}>
                 <Text style={styles.buttonText}>Save Task</Text>
             </TouchableOpacity>
+
+            <ConfirmModal
+                visible={successModalVisible}
+                title="Task added!"
+                message="Your task was saved successfully."
+                confirmText="OK"
+                type="success"
+                onConfirm={() => {
+                    setSuccessModalVisible(false);
+
+                    setTimeout(() => {
+                        inputRef.current?.focus();
+                    }, 250);
+                }}
+
+            />
         </View>
     );
 }

@@ -1,14 +1,9 @@
-import {
-    Alert,
-    Platform,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import type { Todo } from "../types/Todo";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import type { Todo } from "../types/Todo";
+import ConfirmModal from "./ConfirmModal";
 
 type TodoCardProps = {
     todo: Todo;
@@ -31,54 +26,61 @@ export default function TodoCard({
     onEdit,
     onDelete,
 }: TodoCardProps) {
-    function confirmDelete() {
-        if (Platform.OS === "web") {
-            const confirmed = window.confirm(
-                "Are you sure you want to delete this task?"
-            );
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
-            if (confirmed) onDelete();
-            return;
-        }
-
-        Alert.alert("Delete task", "Are you sure you want to delete this task?", [
-            { text: "Cancel", style: "cancel" },
-            { text: "Delete", style: "destructive", onPress: onDelete },
-        ]);
+    function handleConfirmDelete() {
+        onDelete();
+        setDeleteModalVisible(false);
     }
 
     return (
-        <View style={styles.container}>
-            <TouchableOpacity onPress={onToggle} style={styles.checkButton}>
-                <Ionicons
-                    name={todo.completed ? "checkmark-circle" : "ellipse-outline"}
-                    size={28}
-                    color={todo.completed ? "#22c55e" : "#9ca3af"}
-                />
-            </TouchableOpacity>
-
-            <View style={styles.content}>
-                <Text style={[styles.title, todo.completed && styles.completedTitle]}>
-                    {todo.title}
-                </Text>
-
-                <Text style={styles.date}>Created {formatDate(todo.createdAt)}</Text>
-            </View>
-
-            <View style={styles.actions}>
-                <TouchableOpacity onPress={onEdit} style={styles.actionButton}>
-                    <MaterialCommunityIcons
-                        name="square-edit-outline"
-                        size={22}
-                        color="#2563eb"
+        <>
+            <View style={styles.container}>
+                <TouchableOpacity onPress={onToggle} style={styles.checkButton}>
+                    <Ionicons
+                        name={todo.completed ? "checkmark-circle" : "ellipse-outline"}
+                        size={28}
+                        color={todo.completed ? "#22c55e" : "#9ca3af"}
                     />
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={confirmDelete} style={styles.actionButton}>
-                    <Ionicons name="trash-outline" size={22} color="#ef4444" />
-                </TouchableOpacity>
+                <View style={styles.content}>
+                    <Text style={[styles.title, todo.completed && styles.completedTitle]}>
+                        {todo.title}
+                    </Text>
+
+                    <Text style={styles.date}>Created {formatDate(todo.createdAt)}</Text>
+                </View>
+
+                <View style={styles.actions}>
+                    <TouchableOpacity onPress={onEdit} style={styles.actionButton}>
+                        <MaterialCommunityIcons
+                            name="square-edit-outline"
+                            size={22}
+                            color="#2563eb"
+                        />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={() => setDeleteModalVisible(true)}
+                        style={styles.actionButton}
+                    >
+                        <Ionicons name="trash-outline" size={22} color="#ef4444" />
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View>
+
+            <ConfirmModal
+                visible={deleteModalVisible}
+                title="Delete task?"
+                message="This action cannot be undone."
+                confirmText="Delete"
+                cancelText="Cancel"
+                type="danger"
+                onCancel={() => setDeleteModalVisible(false)}
+                onConfirm={handleConfirmDelete}
+            />
+        </>
     );
 }
 
