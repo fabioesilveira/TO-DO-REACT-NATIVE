@@ -15,6 +15,13 @@ export default function RegisterScreen() {
     const { addTodo } = useApp();
     const router = useRouter();
 
+    const today = new Date().toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+    });
+
     function handleAddTask() {
         if (!title.trim()) {
             Alert.alert("Missing task", "Please enter a task before saving.");
@@ -28,7 +35,11 @@ export default function RegisterScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>Add Task</Text>
+            <Text style={styles.heading}>
+                TO DO LIST
+            </Text>
+
+            <Text style={styles.date}>{today}</Text>
 
             <TextInput
                 value={title}
@@ -51,22 +62,30 @@ const styles = StyleSheet.create({
         backgroundColor: "#f3f4f6",
     },
     heading: {
-        fontSize: 30,
-        fontWeight: "bold",
-        marginBottom: 20,
+        fontFamily: "LondrinaOutline_400Regular",
+        fontSize: 58,
+        textAlign: "center",
+        letterSpacing: 2,
+    },
+
+    date: {
+        textAlign: "center",
+        color: "#777",
+        fontSize: 14,
+        marginBottom: 45,
     },
     input: {
         backgroundColor: "#fff",
         borderWidth: 1,
         borderColor: "#ddd",
         borderRadius: 12,
-        padding: 16,
-        fontSize: 18,
+        padding: 14,
+        fontSize: 16,
         marginBottom: 16,
     },
     button: {
         backgroundColor: "#25292e",
-        padding: 16,
+        padding: 14,
         borderRadius: 12,
         alignItems: "center",
     },

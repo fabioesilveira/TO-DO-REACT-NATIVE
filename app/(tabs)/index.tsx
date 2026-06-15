@@ -49,7 +49,6 @@ export default function Home() {
 
       <Text style={styles.date}>{today}</Text>
 
-
       <View style={styles.filters}>
         <TouchableOpacity
           style={[styles.filterButton, filter === "all tasks" && styles.activeFilter]}
