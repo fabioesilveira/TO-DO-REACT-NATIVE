@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import { COLORS } from "@/constants/colors";
 
 type ConfirmModalProps = {
     visible: boolean;
@@ -39,13 +40,19 @@ export default function ConfirmModal({
 
                     <View style={styles.actions}>
                         {onCancel && (
-                            <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
+                            <TouchableOpacity
+                                style={styles.cancelButton}
+                                onPress={onCancel}
+                            >
                                 <Text style={styles.cancelText}>{cancelText}</Text>
                             </TouchableOpacity>
                         )}
 
                         <TouchableOpacity
-                            style={[styles.confirmButton, isDanger && styles.dangerButton]}
+                            style={[
+                                styles.confirmButton,
+                                isDanger && styles.dangerButton,
+                            ]}
                             onPress={onConfirm}
                         >
                             <Text style={styles.confirmText}>{confirmText}</Text>
@@ -69,7 +76,7 @@ const styles = StyleSheet.create({
     card: {
         width: "100%",
         maxWidth: 360,
-        backgroundColor: "#fff",
+        backgroundColor: COLORS.white,
         borderRadius: 22,
         padding: 22,
     },
@@ -77,14 +84,14 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: "800",
-        color: "#25292e",
+        color: COLORS.primary,
         marginBottom: 8,
         textAlign: "center",
     },
 
     message: {
         fontSize: 15,
-        color: "#666",
+        color: COLORS.secondaryText,
         lineHeight: 22,
         marginBottom: 15,
         textAlign: "center",
@@ -101,27 +108,27 @@ const styles = StyleSheet.create({
         paddingVertical: 11,
         paddingHorizontal: 18,
         borderRadius: 12,
-        backgroundColor: "#f3f4f6",
+        backgroundColor: COLORS.background,
     },
 
     confirmButton: {
         paddingVertical: 11,
         paddingHorizontal: 18,
         borderRadius: 12,
-        backgroundColor: "#25292e",
+        backgroundColor: COLORS.primary,
     },
 
     dangerButton: {
-        backgroundColor: "#ef4444",
+        backgroundColor: COLORS.danger,
     },
 
     cancelText: {
         fontWeight: "700",
-        color: "#555",
+        color: COLORS.secondaryText,
     },
 
     confirmText: {
         fontWeight: "800",
-        color: "#ffd33d",
+        color: COLORS.accent,
     },
 });

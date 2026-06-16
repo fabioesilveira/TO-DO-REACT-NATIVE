@@ -1,4 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { COLORS } from "@/constants/colors";
 
 type FilterButtonProps = {
     label: string;
@@ -28,23 +29,23 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingVertical: 8,
         borderRadius: 999,
-        backgroundColor: "#fff",
+        backgroundColor: COLORS.white,
         borderWidth: 1,
-        borderColor: "#ddd",
+        borderColor: COLORS.border,
         alignItems: "center",
     },
 
     activeButton: {
-        backgroundColor: "#25292e",
-        borderColor: "#25292e",
+        backgroundColor: COLORS.primary,
+        borderColor: COLORS.primary,
     },
 
     text: {
-        color: "#555",
+        color: COLORS.secondaryText,
         fontWeight: "700",
     },
 
     activeText: {
-        color: "#ffd33d",
+        color: COLORS.accent,
     },
 });

@@ -7,6 +7,7 @@ import { formatFullDate } from "@/utils/formatDate";
 import FilterButton from "@/components/FilterButton";
 import TaskStats from "@/components/TaskStats";
 import EmptyState from "@/components/EmptyState";
+import { COLORS } from "@/constants/colors";
 
 type FilterType = "all tasks" | "active" | "completed";
 
@@ -41,9 +42,7 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>
-        TO DO LIST
-      </Text>
+      <Text style={styles.heading}>TO DO LIST</Text>
 
       <Text style={styles.date}>{today}</Text>
 
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#f3f4f6",
+    backgroundColor: COLORS.background,
   },
 
   heading: {
@@ -107,11 +106,12 @@ const styles = StyleSheet.create({
     fontSize: 60,
     textAlign: "center",
     letterSpacing: 2,
+    color: COLORS.primary,
   },
 
   date: {
     textAlign: "center",
-    color: "#777",
+    color: COLORS.secondaryText,
     fontSize: 14,
     marginBottom: 25,
   },

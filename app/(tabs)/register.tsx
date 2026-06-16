@@ -1,21 +1,20 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import {
     Alert,
     StyleSheet,
     Text,
-    TextInput,
-    TouchableOpacity,
     View,
 } from "react-native";
 import { useApp } from "@/context/AppProvider";
 import ConfirmModal from "@/components/ConfirmModal";
-import type { TextInput as TextInputType } from "react-native";
 import { formatFullDate } from "@/utils/formatDate";
+import PrimaryButton from "@/components/PrimaryButton";
+import CustomInput from "@/components/CustomInput";
+import { COLORS } from "@/constants/colors";
 
 export default function RegisterScreen() {
     const [title, setTitle] = useState("");
     const [successModalVisible, setSuccessModalVisible] = useState(false);
-    const inputRef = useRef<TextInputType>(null);
     const { addTodo } = useApp();
 
     const today = formatFullDate();
@@ -33,25 +32,20 @@ export default function RegisterScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>
-                TO DO LIST
-            </Text>
+            <Text style={styles.heading}>TO DO LIST</Text>
 
             <Text style={styles.date}>{today}</Text>
 
-            <TextInput
-                ref={inputRef}
+            <CustomInput
                 value={title}
                 onChangeText={setTitle}
                 placeholder="Enter a task..."
-                style={styles.input}
-                autoFocus
-                returnKeyType="done"
             />
 
-            <TouchableOpacity style={styles.button} onPress={handleAddTask}>
-                <Text style={styles.buttonText}>Save Task</Text>
-            </TouchableOpacity>
+            <PrimaryButton
+                title="Save Task"
+                onPress={handleAddTask}
+            />
 
             <ConfirmModal
                 visible={successModalVisible}
@@ -61,12 +55,7 @@ export default function RegisterScreen() {
                 type="success"
                 onConfirm={() => {
                     setSuccessModalVisible(false);
-
-                    setTimeout(() => {
-                        inputRef.current?.focus();
-                    }, 250);
                 }}
-
             />
         </View>
     );
@@ -76,39 +65,21 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: "#f3f4f6",
+        backgroundColor: COLORS.background,
     },
+
     heading: {
         fontFamily: "LondrinaOutline_400Regular",
         fontSize: 60,
         textAlign: "center",
         letterSpacing: 2,
+        color: COLORS.primary,
     },
 
     date: {
         textAlign: "center",
-        color: "#777",
+        color: COLORS.secondaryText,
         fontSize: 14,
         marginBottom: 45,
-    },
-    input: {
-        backgroundColor: "#fff",
-        borderWidth: 1,
-        borderColor: "#ddd",
-        borderRadius: 12,
-        padding: 14,
-        fontSize: 16,
-        marginBottom: 16,
-    },
-    button: {
-        backgroundColor: "#25292e",
-        padding: 14,
-        borderRadius: 12,
-        alignItems: "center",
-    },
-    buttonText: {
-        color: "#ffd33d",
-        fontSize: 16,
-        fontWeight: "bold",
     },
 });

@@ -5,6 +5,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import type { Todo } from "../types/Todo";
 import ConfirmModal from "./ConfirmModal";
 import { formatDate } from "@/utils/formatDate";
+import { COLORS } from "@/constants/colors";
 
 type TodoCardProps = {
     todo: Todo;
@@ -33,7 +34,7 @@ export default function TodoCard({
                     <Ionicons
                         name={todo.completed ? "checkmark-circle" : "ellipse-outline"}
                         size={28}
-                        color={todo.completed ? "#22c55e" : "#9ca3af"}
+                        color={todo.completed ? COLORS.success : COLORS.mutedText}
                     />
                 </TouchableOpacity>
 
@@ -42,7 +43,9 @@ export default function TodoCard({
                         {todo.title}
                     </Text>
 
-                    <Text style={styles.date}>Created {formatDate(todo.createdAt)}</Text>
+                    <Text style={styles.date}>
+                        Created {formatDate(todo.createdAt)}
+                    </Text>
                 </View>
 
                 <View style={styles.actions}>
@@ -50,7 +53,7 @@ export default function TodoCard({
                         <MaterialCommunityIcons
                             name="square-edit-outline"
                             size={22}
-                            color="#2563eb"
+                            color={COLORS.blue}
                         />
                     </TouchableOpacity>
 
@@ -58,7 +61,11 @@ export default function TodoCard({
                         onPress={() => setDeleteModalVisible(true)}
                         style={styles.actionButton}
                     >
-                        <Ionicons name="trash-outline" size={22} color="#ef4444" />
+                        <Ionicons
+                            name="trash-outline"
+                            size={22}
+                            color={COLORS.danger}
+                        />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -79,7 +86,7 @@ export default function TodoCard({
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#fff",
+        backgroundColor: COLORS.white,
         padding: 16,
         marginBottom: 12,
         borderRadius: 16,
@@ -88,7 +95,7 @@ const styles = StyleSheet.create({
         gap: 12,
 
         borderWidth: 1,
-        borderColor: "#e5e7eb",
+        borderColor: COLORS.border,
 
         shadowColor: "#000",
         shadowOpacity: 0.08,
@@ -112,18 +119,18 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 17,
         fontWeight: "600",
-        color: "#111827",
+        color: COLORS.text,
     },
 
     completedTitle: {
-        color: "#9ca3af",
+        color: COLORS.mutedText,
         textDecorationLine: "line-through",
     },
 
     date: {
         marginTop: 4,
         fontSize: 13,
-        color: "#6b7280",
+        color: COLORS.secondaryText,
     },
 
     actions: {
