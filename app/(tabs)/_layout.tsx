@@ -1,6 +1,7 @@
 import { Tabs } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { COLORS } from "@/constants/colors";
 
 export default function TabLayout() {
   return (
@@ -8,17 +9,18 @@ export default function TabLayout() {
       screenOptions={{
         tabBarShowLabel: false,
 
-        tabBarActiveTintColor: "#ffd33d",
-        tabBarInactiveTintColor: "#8a8a8a",
+        tabBarActiveTintColor: COLORS.accent,
+        tabBarInactiveTintColor: COLORS.inactive,
 
         headerStyle: {
-          backgroundColor: "#25292e",
+          backgroundColor: COLORS.primary,
         },
+
         headerShadowVisible: false,
-        headerTintColor: "#fff",
+        headerTintColor: COLORS.white,
 
         tabBarStyle: {
-          backgroundColor: "#25292e",
+          backgroundColor: COLORS.primary,
           height: 65,
           borderTopWidth: 0,
           paddingTop: 8,
@@ -70,7 +72,7 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="item/[id]"
+        name="edit/[id]"
         options={{
           href: null,
           title: "",

@@ -9,6 +9,7 @@ import TaskStats from "@/components/TaskStats";
 import EmptyState from "@/components/EmptyState";
 import { COLORS } from "@/constants/colors";
 
+
 type FilterType = "all tasks" | "active" | "completed";
 
 export default function Home() {
@@ -81,7 +82,7 @@ export default function Home() {
           renderItem={({ item }) => (
             <TodoCard
               todo={item}
-              onEdit={() => router.push(`/item/${item.id}`)}
+              onEdit={() => router.push(`./edit/${item.id}`)}
               onToggle={() => toggleTodo(item.id)}
               onDelete={() => deleteTodo(item.id)}
             />
